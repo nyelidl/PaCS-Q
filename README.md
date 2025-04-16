@@ -1,4 +1,4 @@
-# PaCS-Q
+# PaCS-Q (dev)
 PaCS-Q is a Python toolkit designed to assist with Parallel Cascade Selection simulations (PaCS) for studying protein structural transitions in MD and QM/MM MD levels.
 
 Welcome to PaCS-Q v1.0.5 by L.Duan 2025.4.15
@@ -83,10 +83,19 @@ pip install biopython
 - Create QM input from PaCS-Q Trajectory "pacsana_QM_input.py"
 
 
-# Case
+# Example
 ## Case I
+### Introduction
+The **Grotthuss mechanism** reveals the unique process by which protons move in water: water molecules first absorb an extra proton to form a hydronium ion, and this ion rapidly transfers the proton to a neighboring molecule through hydrogen bond interactions. This results in a series of consecutive proton hops that greatly enhance the efficiency of proton conduction. Today, this model has become one of the key theories for explaining fast proton conduction in water. In this work, I will reconstruct this mechanism using the PaCS-Q method.
 
-## Case II
+### Preparation
+As with many sampling techniques, having a good initial configuration is the key to success. Therefore, I strongly recommend that you perform initial sampling through molecular dynamics simulations, selecting a relatively appropriate hydrogen-bond network from the simulation for your study. There are already plenty of tutorials available on molecular dynamics, so I will not take up the space here to describe how molecular dynamics is carried out. Through molecular dynamics, we can obtain a topology file (.top).
+
+As shown in the figure, we selected a short hydrogen-bond network from the molecular dynamics trajectory file, and saved the coordinates of that frame (in a .rst file).
+
+Since we need to study the process of proton transfer, we optimize the structure after the reaction using any QM software (in this example, ORCA 6.0 is used), examine the optimized structure, and save it as a PDB file. **It is important to emphasize that the number of atoms and the order of atoms in each residue in the PDB file must be identical to those in the topology file—even if the proton has transferred and no longer belongs to that residue, the atom must still be included within the original residue range.**
+
+![fig1](case_1/fig1.png)
 
 
 ## For More Detail of PaCS-Q Usage:
