@@ -8,8 +8,8 @@ Parallel Cascade Selection simulations (PaCS) for studying
 protein structural transitions in MD and QM/MM MD level.
 
 Please cite paper:
-Lian Duan, Kowit Hengphasatporn, Ryuhei Harada, Yasuteru Shigeta. JCTC https://doi.org/10.1021/acs.jctc.5c00169
-Lian Duan, Kowit Hengphasatporn, Yasuteru Shigeta. JCTC https://doi.org/xx.xxx/acs.jcim.xxxxx
+-Lian Duan, Kowit Hengphasatporn, Ryuhei Harada, Yasuteru Shigeta. JCTC https://doi.org/10.1021/acs.jctc.5c00169
+-Lian Duan, Kowit Hengphasatporn, Yasuteru Shigeta. JCTC https://doi.org/xx.xxx/acs.jcim.xxxxx
 
                     ██████╗░░█████╗░░█████╗░░██████╗░░░░░░░░░██████╗░
                     ██╔══██╗██╔══██╗██╔══██╗██╔════╝░░░░░░░░██╔═══██╗
