@@ -31,14 +31,9 @@ protein structural transitions in MD and QM/MM MD level.
 ### 1. Clone or Download the Toolkit
 **Using the following command:**
 
+Clone it using Git:
 ```bash
-wget https://github.com/DLCCS/PaCS-Q/archive/refs/heads/main.zip
-unzip main.zip
-mv PaCS-Q-main PaCS-Q
-```
-Or clone it using Git:
-```bash
-git clone https://github.com/DLCCS/PaCS-Q.git
+git clone https://github.com/nyelidl/PaCS-Q.git
 ```
 
 ### 2. Export the Path in ~/.bashrc
