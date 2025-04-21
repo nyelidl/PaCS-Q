@@ -94,7 +94,7 @@ Since we need to study the process of proton transfer, we optimize the structure
 
 
 ## For More Detail of PaCS-Q Usage:
-PaCS-Q -h
+pacs_q -h
                       
 
   
