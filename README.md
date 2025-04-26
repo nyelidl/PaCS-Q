@@ -157,7 +157,7 @@ pdb_last.sh: A script to generate a PDB file of the final frame.
 After executing `./cpp.sh`, the following trajectory files will be generated.
 Please note that if you are using a supercomputer, you must first load the appropriate AMBER environment (e.g., module load amberXXX) before running the script.
 
-[movie_1](https://youtube.com/shorts/-QA0ezi-VTc?feature=share)
+https://github.com/user-attachments/assets/83b31342-c4d2-43cc-993e-b9a7534d26a2
 
 
 ## For More Detail of PaCS-Q Usage:
