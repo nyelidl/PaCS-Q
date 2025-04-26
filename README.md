@@ -160,6 +160,12 @@ Please note that if you are using a supercomputer, you must first load the appro
 https://github.com/user-attachments/assets/83b31342-c4d2-43cc-993e-b9a7534d26a2
 
 ## Case II
+### Introduction
+In the second example, we select a reaction in which a chorismate is converted into a prephenate through an enzyme-catalyzed process. This is an intramolecular reaction catalyzed by chorismate mutase. Chorismate mutase facilitates the conversion of chorismate into prephenate by lowering the activation energy barrier of the reaction.
+
+### Preparation
+The preparation steps are the same as those described in Case I and will not be repeated here. We prepared the force field parameters for chorismate and generated the corresponding [top](/case_2/case_2.top) and [crd](/case_2/case_2.crd) files using tLEaP. Similarly, the optimized structure of prephenate was obtained using ORCA and used as the [reference structure](/case_2/ref.pdb). The QM region was also defined in the [qmmm.in](/case_2/qmmm.in) file.
+
 ![m2](/case_2/Pacsq_D.gif)
 
 
