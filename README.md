@@ -166,6 +166,13 @@ In the second example, we select a reaction in which a chorismate is converted i
 ### Preparation
 The preparation steps are the same as those described in Case I and will not be repeated here. We prepared the force field parameters for chorismate and generated the corresponding [top](/case_2/case_2.top) and [crd](/case_2/case_2.crd) files using tLEaP. Similarly, the optimized structure of prephenate was obtained using ORCA and used as the [reference structure](/case_2/ref.pdb). The QM region was also defined in the [qmmm.in](/case_2/qmmm.in) file.
 
+### Run PaCS-Q!
+The PaCS-Q simulation can be easily initiated with a single command line:
+```bash
+pacs_q -cy 3000 -cd 5 -r ref.pdb -s “resid 1 151 225” -qm qmmm.in
+```
+Since this reaction is more complex than the previous case, we performed the simulation using 3000 cycles. Running this simulation may take approximately 2 to 3 hours.
+
 ![m2](/case_2/Pacsq_D.gif)
 
 
