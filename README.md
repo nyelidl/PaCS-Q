@@ -169,7 +169,7 @@ The preparation steps are the same as those described in Case I and will not be 
 ### Run PaCS-Q!
 The PaCS-Q simulation can be easily initiated with a single command line:
 ```bash
-pacs_q -cy 3000 -cd 5 -r ref.pdb -s “resid 1 151 225” -qm qmmm.in
+pacs_q -cy 3000 -cd 5 -r ref.pdb -s “resid 349” -qm qmmm.in
 ```
 Since this reaction is more complex than the previous case, we performed the simulation using 3000 cycles. Running this simulation may take approximately 2 to 3 hours.
 
