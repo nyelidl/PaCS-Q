@@ -129,7 +129,7 @@ conda activate pacsq
 python3 /data/home/hmahedi/Workshop_PaCS_Q/PaCS-Q/PaCSQ_for_workshop/pacs_q_test.py -cy 400 -cd 5 -r ref.pdb -s "resid 1 151 225" -qm qmmm.in
 ```
 
-2. PBS system (based on the IMS supercomputer in Japan)
+**2. PBS system (based on the IMS supercomputer in Japan)**
 ```csh
 #!/bin/csh -f
 #PBS -l select=1:ncpus=40:mpiprocs=40:ompthreads=1
