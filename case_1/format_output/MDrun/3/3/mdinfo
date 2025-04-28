@@ -1,0 +1,22 @@
+
+ NSTEP =        5   TIME(PS) =       0.005  TEMP(K) =   309.58  PRESS = -1721.4
+ Etot   =     -4454.8815  EKtot   =      1900.9396  EPtot      =     -6355.8211
+ BOND   =      1114.5322  ANGLE   =         0.0000  DIHED      =         0.0000
+ 1-4 NB =         0.0000  1-4 EEL =         0.0000  VDWAALS    =       927.1932
+ EELEC  =     -8257.5932  EHBOND  =         0.0000  RESTRAINT  =         0.0000
+ PM6ESCF=      -139.9533
+ EKCMT  =       625.3312  VIRIAL  =      1399.5666  VOLUME     =     20831.6873
+                                                    Density    =         0.9881
+ Ewald error estimate:   0.1704E+00
+
+| Final Performance Info:
+| -----------------------------------------------------
+| Average timings for last       1 steps:
+|     Elapsed(s) =       0.00 Per Step(ms) =       2.61
+|         ns/day =      33.04   seconds/ns =    2614.97
+|
+| Average timings for all steps:
+|     Elapsed(s) =       0.03 Per Step(ms) =       5.48
+|         ns/day =      15.78   seconds/ns =    5476.38
+| -----------------------------------------------------
+
