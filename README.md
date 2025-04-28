@@ -31,14 +31,15 @@ protein structural transitions in MD and QM/MM MD level.
 pip install PaCS-Q
 ```
 
-### 2. Create and Activate Conda Environment (recommend this setting for the supercomputer's queueing system)
+**Create and Activate Conda Environment (recommend this setting for the supercomputer's queueing system)**
 ```bash
 conda create -n pacs-q
 conda init
 conda activate pacs-q
+pip install PaCS-Q
 ```
 
-### 3. Input Files
+### 2. Input Files
 - For LB-PaCS-MD (Distance-based PaCS-Q)
         Topology file from (.top) tLEaP and the coordinate file (.rst or .crd) obtained from after heating up step.
         You can adjust any MD parameter in "md.in".
@@ -48,12 +49,12 @@ conda activate pacs-q
          Topology file from tLEaP (.top), the coordinate file (.rst or .crd) obtained from after heating up step, and reference structure in PDB file format (.pdb).
          You can adjust any MD parameter in "qmmm.in".
 
-### 4. Extend and Generate Trajectory
+### 3. Extend and Generate Trajectory
 - To extend the simulation, please use "--rerun" in the command line.
 - To generate the trajectory and the lastframe in pdb file, please use "cpp.sh" and "pdb_last.sh".
 - To clean all of MD directory, please use "clean.sh".
 
-### 5. MD Analysis
+### 4. MD Analysis
 - Generate CV and 2D-PES by "pacsana_dis_collection.py"
 - PCA analysis by "pacsana_procupine.py"
 - Create QM input from PaCS-Q Trajectory "pacsana_QM_input.py"
