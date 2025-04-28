@@ -161,8 +161,134 @@ The upload of this part will be completed shortly.
 
 ## For More Detail of PaCS-Q Usage:
 pacs_q -h
+```
+usage: pacs_q [-h] [-cy CYC] [-cd CANDI] [-qm QMS] [-p TOP] [-c CRD] [-r REF]
+              [-s SEL] [-e EXQ] [--rerun] [--exqm] [-d DIR] [-l LOC]
+
+Welcome to PaCS-Q v1.0.9 by L.Duan 2025.4.28
+    
+    
+    
+                    ██████╗░░█████╗░░█████╗░░██████╗░░░░░░░░░██████╗░
+                    ██╔══██╗██╔══██╗██╔══██╗██╔════╝░░░░░░░░██╔═══██╗
+                    ██████╔╝███████║██║░░╚═╝╚█████╗░░█████╗║██╗██░██║
+                    ██╔═══╝░██╔══██║██║░░██╗░╚═══██╗░╚════╝░╚██████╔╝
+                    ██║░░░░░██║░░██║╚█████╔╝██████╔╝░░░░░░░░░╚═██╔═╝░
+                    ╚═╝░░░░░╚═╝░░╚═╝░╚════╝░╚═════╝░░░░░░░░░░░░╚═╝░░░
+                    ///////////////QM/MM MD-SIMULATION///////////////
+    
+
+options:
+  -h, --help            show this help message and exit
+  -cy CYC, --cyc CYC    How many cycles to run?
+  -cd CANDI, --candi CANDI
+                        How many candidates to run?
+  -qm QMS, --qms QMS    QM/MM MD input file
+  -p TOP, --top TOP     PaCS-Q will be automatically specify your topology
+                        file. If you need to specify topology file by
+                        yourself, please use this keyword. default:
+                        None ***Warning: If you want let program detect
+                        your coordinate file automatically, you should name
+                        like XXX.top
+  -c CRD, --crd CRD     PaCS-Q will be automatically specify your rst or crd
+                        file. If you need to specify rst or crd file by
+                        yourself, please use this keyword. default:
+                        None ***Warning: If you want let program detect
+                        your coordinate file automatically, you should name
+                        like XXX.rst or XXX.crd
+  -r REF, --ref REF     For RMSD based selection PaCS-Q: specify your
+                        reference structure file name in PDB, example:
+                        ./ref.pdb
+  -s SEL, --sel SEL     Specify atom or residue for PaCS-Q selection, example:
+                        resid 5-7
+  -e EXQ, --exq EXQ     Name of your extend qm input (dev)
+  --rerun               This section can rerun your calculation from the died
+                        point
+  --exqm                Run with extend qm software (dev)
+  -d DIR, --dir DIR     Specify your run directory default: MDrun
+  -l LOC, --loc LOC     Path to PaCS-Q work directory default: /home/biophys
+
+example: pacs_q_test.py -cy 4000 -cd 5 -r ./F.pdb -s "resname CHA" -qm qmmm.in
+         pacs_q_test.py --rerun -cy 2000 -cd 5 -r ./nonc.pdb -s "resid 73 97 157" -q qmmm.in
+         
+!!! Warning !!!
+    Don't name your files starting with 'dis' or 'sum-all', they will be deleted by clean code!
+         
+Please cite paper: 
+    Lian Duan, Kowit Hengphasatpron, Ryuhei Harada, Yasuteru Shigeta. JCTC https://doi.org/10.1021/acs.jctc.5c00169 
+```
 
 pacs_q_md -h (LB-PaCS MD simulation via PaCS-Q)
+```
+usage: pacs_q_md [-h] [-cy CYC] [-cd CANDI] [-md MDS] [-p TOP] [-c CRD]
+                 [-r REF] [-s SEL] [-s2 SEL2] [-m SET] [--rerun] [-d DIR]
+                 [-l LOC]
+
+Welcome to PaCS-Q v1.0.9 by L.Duan 2025.4.28
+    
+    
+    
+                    ██████╗░░█████╗░░█████╗░░██████╗░░░░░░░░░██████╗░
+                    ██╔══██╗██╔══██╗██╔══██╗██╔════╝░░░░░░░░██╔═══██╗
+                    ██████╔╝███████║██║░░╚═╝╚█████╗░░█████╗║██╗██░██║
+                    ██╔═══╝░██╔══██║██║░░██╗░╚═══██╗░╚════╝░╚██████╔╝
+                    ██║░░░░░██║░░██║╚█████╔╝██████╔╝░░░░░░░░░╚═██╔═╝░
+                    ╚═╝░░░░░╚═╝░░╚═╝░╚════╝░╚═════╝░░░░░░░░░░░░╚═╝░░░
+                    //////////////////MD-SIMULATION//////////////////
+    
+
+options:
+  -h, --help            show this help message and exit
+  -cy CYC, --cyc CYC    How many cycles to run?
+  -cd CANDI, --candi CANDI
+                        How many candidates to run?
+  -md MDS, --mds MDS    MD input file
+  -p TOP, --top TOP     PaCS-Q will be automatically specify your topology
+                        file. If you need to specify topology file by
+                        yourself, please use this keyword. default:
+                        None ***Warning: If you want let program detect
+                        your coordinate file automatically, you should name
+                        like XXX.top
+  -c CRD, --crd CRD     PaCS-Q will be automatically specify your rst or crd
+                        file. If you need to specify rst or crd file by
+                        yourself, please use this keyword. default:
+                        None ***Warning: If you want let program detect
+                        your coordinate file automatically, you should name
+                        like XXX.rst or XXX.crd
+  -r REF, --ref REF     For RMSD based selection PaCS-Q: specify your
+                        reference structure file name in PDB, example:
+                        ./ref.pdb
+  -s SEL, --sel SEL     Specify atom or residue for PaCS-Q selection, example:
+                        resid 5-7; Specify only this selection for RMSD based
+                        selection; Specify -s as the first selection and -s2
+                        as the second selection for Distance based selection
+  -s2 SEL2, --sel2 SEL2
+                        For distance based selection PaCS-Q: Specify atom or
+                        residue for the second selection, example: resid 8
+  -m SET, --set SET     For distance based selection PaCS-Q: type b for
+                        binding simulation or u for unbinding simulation
+  --rerun               This section can rerun your calculation from the died
+                        point
+  -d DIR, --dir DIR     Specify your run directory default: MDrun
+  -l LOC, --loc LOC     Path to PaCS-Q work directory default: /home/biophys
+
+example: 
+RMSD based PaCS-Q:
+    Mandatory files: Reference structure (ref.pdb), MD input file (md.in), topology (.top) and coordinate (.rst or .crd) files
+         pacs_q_md_test.py -cy 100 -cd 5 -r ./ref.pdb -s "resname MOL" -md md.in
+         pacs_q_md_test.py --rerun -cy 100 -cd 5 -s "resname MOL" -md md.in
+         
+Distance based PaCS-Q:
+    Mandatory files: MD input file (md.in), topology (.top) and coordinate (.rst or .crd) files 
+         pacs_q_md_test.py -cy 100 -cd 5 -s "resid 73" -s2 "resid 150" -md md.in -m b
+         pacs_q_md_test.py --rerun -cy 100 -cd 5 -s "resid 73" -s2 "resid 150" -md md.in -m b
+         
+!!! Warning !!!
+    Don't name your files starting with 'dis' or 'sum-all', they will be deleted by clean code!
+         
+Please cite paper: 
+    Lian Duan, Kowit Hengphasatpron, Ryuhei Harada, Yasuteru Shigeta. JCTC https://doi.org/10.1021/acs.jctc.5c00169 
+```
                       
 
   
