@@ -5,10 +5,6 @@ Welcome to PaCS-Q v1.0.9 by L.Duan 2025.4.28
 Parallel Cascade Selection simulations (PaCS) for studying
 protein structural transitions in MD and QM/MM MD level.
 
-## Please cite paper:
-1. Lian Duan, Kowit Hengphasatporn, Ryuhei Harada, Yasuteru Shigeta. JCTC https://doi.org/10.1021/acs.jctc.5c00169
-2. Lian Duan, Kowit Hengphasatporn, Yasuteru Shigeta. JCIM https://doi.org/xx.xxx/acs.jcim.xxxxx
-
                     ██████╗░░█████╗░░█████╗░░██████╗░░░░░░░░░██████╗░
                     ██╔══██╗██╔══██╗██╔══██╗██╔════╝░░░░░░░░██╔═══██╗
                     ██████╔╝███████║██║░░╚═╝╚█████╗░░█████╗║██╗██░██║
@@ -272,6 +268,10 @@ options:
   -d DIR, --dir DIR     Specify your run directory default: MDrun
   -l LOC, --loc LOC     Path to PaCS-Q work directory default: /home/biophys
 
+## Please cite paper:
+1. Lian Duan, Kowit Hengphasatporn, Ryuhei Harada, Yasuteru Shigeta. JCTC https://doi.org/10.1021/acs.jctc.5c00169
+2. Lian Duan, Kowit Hengphasatporn, Yasuteru Shigeta. JCIM https://doi.org/xx.xxx/acs.jcim.xxxxx
+
 example: 
 RMSD based PaCS-Q:
     Mandatory files: Reference structure (ref.pdb), MD input file (md.in), topology (.top) and coordinate (.rst or .crd) files
@@ -289,6 +289,9 @@ Distance based PaCS-Q:
 Please cite paper: 
     Lian Duan, Kowit Hengphasatpron, Ryuhei Harada, Yasuteru Shigeta. JCTC https://doi.org/10.1021/acs.jctc.5c00169 
 ```
-                      
+
+## Please cite paper:
+1. Lian Duan, Kowit Hengphasatporn, Ryuhei Harada, Yasuteru Shigeta. JCTC https://doi.org/10.1021/acs.jctc.5c00169
+2. Lian Duan, Kowit Hengphasatporn, Yasuteru Shigeta. JCIM https://doi.org/xx.xxx/acs.jcim.xxxxx
 
   
