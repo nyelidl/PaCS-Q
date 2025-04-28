@@ -1,6 +1,4 @@
 # PaCS-Q (dev)
-PaCS-Q is a Python toolkit designed to assist with Parallel Cascade Selection simulations (PaCS) for studying protein structural transitions in MD and QM/MM MD levels.
-
 Welcome to PaCS-Q v1.0.9 by L.Duan 2025.4.28
 
 **PaCS-Q** is a Python toolkit designed to assist with
@@ -97,25 +95,25 @@ If you are using a supercomputer, we provide two job script examples for differe
 **1. SLURM system**
 ```bash
 #!/bin/bash
-#SBATCH --job-name=PaCSQ             # specific job name
-#SBATCH --ntasks=4                   # specific number of tasks
-#SBATCH --time=24:00:00              # job time limit <hr:min:sec>
+#SBATCH --job-name=PaCSQ            
+#SBATCH --ntasks=4                  
+#SBATCH --time=24:00:00             
 #SBATCH --gres=gpu:0
-#SBATCH --cpus-per-task=1             # specific number of CPUs per task
-#SBATCH --mem=20GB                   # specific memory allocation
-#SBATCH --partition=active           # specific partition
+#SBATCH --cpus-per-task=6           
+#SBATCH --mem=10GB                 
+#SBATCH --partition=active        
 
 module load amber/22
 source /data/home/hmahedi/miniconda3/bin/activate
 conda activate pacsq
-python3 /data/home/hmahedi/Workshop_PaCS_Q/PaCS-Q/PaCSQ_for_workshop/pacs_q_test.py -cy 400 -cd 5 -r ref.pdb -s "resid 1 151 225" -qm qmmm.in
+python3 /data/home/hmahedi/Workshop_PaCS_Q/PaCS-Q/PaCSQ_for_workshop/pacsq_toolkit/pacs_q.py -cy 400 -cd 5 -r ref.pdb -s "resid 1 151 225" -qm qmmm.in
 ```
 
 **2. PBS system (based on the IMS supercomputer in Japan)**
 ```csh
 #!/bin/csh -f
-#PBS -l select=1:ncpus=40:mpiprocs=40:ompthreads=1
-#PBS -l walltime=128:00:00 
+#PBS -l select=1:ncpus=24:mpiprocs=24:ompthreads=1
+#PBS -l walltime=28:00:00 
 
 if ($?PBS_O_WORKDIR) then
   cd ${PBS_O_WORKDIR}
@@ -125,7 +123,7 @@ module -s purge
 module -s load amber/24u1
 source /apl/conda/20240305/conda_init.csh
 conda activate myenv
-python3 /data/home/hmahedi/Workshop_PaCS_Q/PaCS-Q/PaCSQ_for_workshop/pacs_q_test.py -cy 400 -cd 5 -r ref.pdb -s "resid 1 151 225" -qm qmmm.in
+python3 /data/home/hmahedi/Workshop_PaCS_Q/PaCS-Q/PaCSQ_for_workshop/pacsq_toolkit/pacs_q.py -cy 400 -cd 5 -r ref.pdb -s "resid 1 151 225" -qm qmmm.in
 ```
 Users should choose the appropriate script based on the job scheduling system of their supercomputer. **Please note that when using the PaCS-Q suite on a supercomputer, it is recommended to use absolute paths to avoid file path errors during job execution.**
 
