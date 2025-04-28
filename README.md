@@ -160,7 +160,8 @@ Since this reaction is more complex than the previous case, we performed the sim
 The upload of this part will be completed shortly.
 
 ## For More Detail of PaCS-Q Usage:
-pacs_q.py -h
+pacs_q -h
+pacs_q_md -h (LB-PaCS MD simulation via PaCS-Q)
                       
 
   
