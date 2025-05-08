@@ -79,7 +79,7 @@ The four required files are: the input files [top](case_1/H3O.top) and [rst](cas
 The PaCS-Q simulation can be easily initiated with a single command line:
 
 ```bash
-pacs_q -cy 400 -cd 5 -r ref.pdb -s “resid 1 151 225” -qm qmmm.in
+pacs_q -cy 400 -cd 5 -r ref.pdb -s "resid 1 151 225" -qm qmmm.in
 ```
 Here, -cy specifies the number of cycles, -cd specifies the number of candidates, -r designates the filename of the reference PDB file, and -s defines the selection region for RMSD calculations.
 Please note that **the selected region for RMSD calculation is different from the QM/MM region; you may choose a larger or smaller region based on your needs.**
@@ -146,7 +146,7 @@ The preparation steps are the same as those described in Case I and will not be 
 ### Run PaCS-Q!
 The PaCS-Q simulation can be easily initiated with a single command line:
 ```bash
-pacs_q -cy 3000 -cd 5 -r ref.pdb -s “resid 349” -qm qmmm.in
+pacs_q -cy 3000 -cd 5 -r ref.pdb -s "resname CHA" -qm qmmm.in
 ```
 Since this reaction is more complex than the previous case, we performed the simulation using 3000 cycles. Running this simulation may take approximately 2 to 3 hours.
 
