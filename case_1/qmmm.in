@@ -18,7 +18,7 @@ ig=-1,
 ifqnt=1
 /
 &qmmm
-qmmask=':1,151',
+qmmask=':1,151,225',
 qmcharge=1,
 qm_theory='PM6',
 qmcut=6.0,
