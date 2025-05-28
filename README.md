@@ -293,7 +293,7 @@ Please cite paper:
 ## Q&A
 **1. Why is the RMSD result not normal? (Normally should be lower than 5)**
 !!! Warning!!!
-answer: **To avoid issues related to periodic boundary conditions, please try to avoid using non-cubic water boxes, especially truncated octahedron boxes.** Also, try to delete the iwarp=1 in qmmm.in
+**Answer:** To avoid issues related to periodic boundary conditions, please try to avoid using non-cubic water boxes, **especially truncated octahedron boxes.** Also, try to delete the iwarp=1 in qmmm.in
 
 ## Please cite paper:
 1. Lian Duan, Kowit Hengphasatporn, Ryuhei Harada, Yasuteru Shigeta. JCTC https://doi.org/10.1021/acs.jctc.5c00169
