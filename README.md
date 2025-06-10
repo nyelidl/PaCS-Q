@@ -296,7 +296,7 @@ Please cite paper:
 
 **Answer:** To avoid issues related to periodic boundary conditions, please try to avoid using non-cubic water boxes, **especially truncated octahedron boxes.** Also, try to delete the iwarp=1 in qmmm.in
 
-**1. Why is the simulation so slow**
+**2. Why is the simulation so slow**
 
 
 **Answer:** You can change the number of CPUs by locating the pacsq_toolkit, then modifying the core in sander_run_mpi.py. Additionally, you can use the command export OMP_NUM_THREADS=1 to ensure it runs using MPI (not OpenMPI).
