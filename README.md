@@ -303,7 +303,11 @@ Please cite paper:
 
 
 ## Please cite paper:
-1. Lian Duan, Kowit Hengphasatporn, Ryuhei Harada, Yasuteru Shigeta. JCTC https://doi.org/10.1021/acs.jctc.5c00169
-2. Lian Duan, Kowit Hengphasatporn, Yasuteru Shigeta. JCIM https://doi.org/10.1021/acs.jcim.5c00936
+1. Lian Duan, Kowit Hengphasatporn, Ryuhei Harada, and Yasuteru Shigeta
+   Journal of Chemical Theory and Computation 2025 21 (8), 4309-4318
+   DOI: 10.1021/acs.jctc.5c00169
+3. Lian Duan, Kowit Hengphasatporn, and Yasuteru Shigeta.
+   Journal of Chemical Information and Modeling 2025
+   DOI: 10.1021/acs.jcim.5c00936
 
   
