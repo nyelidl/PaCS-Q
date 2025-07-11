@@ -17,7 +17,7 @@ def main():
     default_top = top_file[0] if top_file else None
 
 
-    parser = argparse.ArgumentParser(description="""Welcome to PaCS-Q v1.0.9 by L.Duan 2025.4.28
+    parser = argparse.ArgumentParser(description="""Welcome to PaCS-Q v1.0.10 by L.Duan 2025.7.11
     
     
     
@@ -29,14 +29,17 @@ def main():
                     ╚═╝░░░░░╚═╝░░╚═╝░╚════╝░╚═════╝░░░░░░░░░░░░╚═╝░░░
                     ///////////////QM/MM MD-SIMULATION///////////////
     """, epilog="""
-example: pacs_q_test.py -cy 4000 -cd 5 -r ./F.pdb -s "resname CHA" -qm qmmm.in
-         pacs_q_test.py --rerun -cy 2000 -cd 5 -r ./nonc.pdb -s "resid 73 97 157" -q qmmm.in
+example: pacs_q -cy 4000 -cd 5 -r ./F.pdb -s "resname CHA" -qm qmmm.in
+         pacs_q --rerun -cy 2000 -cd 5 -r ./nonc.pdb -s "resid 73 97 157" -q qmmm.in
          
 !!! Warning !!!
     Don't name your files starting with 'dis' or 'sum-all', they will be deleted by clean code!
          
 Please cite paper: 
-    Lian Duan, Kowit Hengphasatpron, Ryuhei Harada, Yasuteru Shigeta. JCTC https://doi.org/10.1021/acs.jctc.5c00169 
+    1. Lian Duan, Kowit Hengphasatporn, Ryuhei Harada, and Yasuteru Shigeta Journal of Chemical Theory and Computation 2025 21 (8), 4309-4318 DOI: 10.1021/acs.jctc.5c00169
+    2. Lian Duan, Kowit Hengphasatporn, and Yasuteru Shigeta. Journal of Chemical Information and Modeling 2025 DOI: 10.1021/acs.jcim.5c00936
+
+
 
     """, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('-cy', '--cyc', type=int, help='How many cycles to run?')

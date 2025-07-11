@@ -8,7 +8,7 @@ import warnings
 def main():
     from pacsq_toolkit.pacsq_run import pacsq_run
     from pacsq_toolkit.pacsq_exq_run import pacsq_exq_run
-    from pacsq_toolkit.pacsq_pmemd_rerun import pacsq_pmemd_rerun
+    from pacsq_toolkit.pacsq_pmemd_rerun import pacsq_pmemd_rerun, pacsq_pmemd_rerun_rmsd 
     from pacsq_toolkit.pacsq_pmemd_run import pacsq_pmemd_run_rmsd, pacsq_pmemd_run_dis
     from pacsq_toolkit.pacsq_rerun import get_latest_folder_name, pacsq_rerun
     from pacsq_toolkit.file_find import find_top_files, find_nc_files, find_crd_files
@@ -18,7 +18,7 @@ def main():
     top_file = find_top_files()
     default_top = top_file[0] if top_file else None
 
-    parser = argparse.ArgumentParser(description="""Welcome to PaCS-Q v1.0.9 by L.Duan 2025.4.28
+    parser = argparse.ArgumentParser(description="""Welcome to PaCS-Q v1.0.10 by L.Duan 2025.7.11
     
     
     
@@ -34,19 +34,22 @@ def main():
 example: 
 RMSD based PaCS-Q:
     Mandatory files: Reference structure (ref.pdb), MD input file (md.in), topology (.top) and coordinate (.rst or .crd) files
-         pacs_q_md_test.py -cy 100 -cd 5 -r ./ref.pdb -s "resname MOL" -md md.in
-         pacs_q_md_test.py --rerun -cy 100 -cd 5 -s "resname MOL" -md md.in
+         pacs_q_md -cy 100 -cd 5 -r ./ref.pdb -s "resname MOL" -md md.in
+         pacs_q_md --rerun -cy 100 -cd 5 -r ./ref.pdb -s "resname MOL" -md md.in
          
 Distance based PaCS-Q:
     Mandatory files: MD input file (md.in), topology (.top) and coordinate (.rst or .crd) files 
-         pacs_q_md_test.py -cy 100 -cd 5 -s "resid 73" -s2 "resid 150" -md md.in -m b
-         pacs_q_md_test.py --rerun -cy 100 -cd 5 -s "resid 73" -s2 "resid 150" -md md.in -m b
+         pacs_q_md -cy 100 -cd 5 -s "resid 73" -s2 "resid 150" -md md.in -m b
+         pacs_q_md --rerun -cy 100 -cd 5 -s "resid 73" -s2 "resid 150" -md md.in -m b
          
 !!! Warning !!!
     Don't name your files starting with 'dis' or 'sum-all', they will be deleted by clean code!
          
 Please cite paper: 
-    Lian Duan, Kowit Hengphasatpron, Ryuhei Harada, Yasuteru Shigeta. JCTC https://doi.org/10.1021/acs.jctc.5c00169 
+    1. Lian Duan, Kowit Hengphasatporn, Ryuhei Harada, and Yasuteru Shigeta Journal of Chemical Theory and Computation 2025 21 (8), 4309-4318 DOI: 10.1021/acs.jctc.5c00169
+    2. Lian Duan, Kowit Hengphasatporn, and Yasuteru Shigeta. Journal of Chemical Information and Modeling 2025 DOI: 10.1021/acs.jcim.5c00936
+
+
 
     """, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('-cy', '--cyc', type=int, help='How many cycles to run?')
@@ -87,33 +90,40 @@ Please cite paper:
     # print
     parser.print_help()
 
-    if args.sel2 is None:
-        print("run pmemd by RMSD")
-        pacsq_pmemd_run_rmsd(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.ref, args.sel, args.mds)
-    elif args.ref is None:
-        if args.set == "b":
-            if args.rerun:
+    if args.rerun:
+        print("rerun code")
+        if args.sel2 is None:
+            print("rerun pmemd by RMSD")
+            pacsq_pmemd_rerun_rmsd(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.ref, args.sel,
+                                    args.mds)
+        elif args.ref is None:
+            if args.set == "b":
                 print("rerun pmemd by Distance (binding)")
                 pacsq_pmemd_rerun(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.sel, args.sel2,
                                     args.mds, 1)
-            else:
-                print("run pmemd by Distance (binding)")
-                pacsq_pmemd_run_dis(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.sel, args.sel2,
-                                    args.mds, 1)
 
-        if args.set == "u":
-            if args.rerun:
+            if args.set == "u":
                 print("rerun pmemd by Distance (unbinding)")
                 pacsq_pmemd_rerun(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.sel, args.sel2,
                                   args.mds, 0)
-            else:
+
+    else:
+        print("run code")
+        if args.sel2 is None:
+            print("run pmemd by RMSD")
+            pacsq_pmemd_run_rmsd(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.ref, args.sel, args.mds)
+
+        elif args.ref is None:
+            if args.set == "b":
+                print("run pmemd by Distance (binding)")
+                pacsq_pmemd_run_dis(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.sel, args.sel2,
+                                    args.mds, 1)
+            if args.set == "u":
                 print("run pmemd by Distance (unbinding)")
                 pacsq_pmemd_run_dis(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.sel, args.sel2,
                                         args.mds, 0)
 
 
-    elif args.sel2 or args.ref is None:
-        print("should select rmsd or distace")
     #if args.rerun:
     #    pacsq_rerun(args.cyc, args.rep, args.fol, args.loc, args.crd, args.top, args.ref, args.sel, args.qms)
     #elif args.exqm:
