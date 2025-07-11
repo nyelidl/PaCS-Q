@@ -1,15 +1,6 @@
 # PaCS-Q (dev)
 Welcome to PaCS-Q by L.Duan
 
-## Version 1.0.9
-2025.4.28
-- Added support for running LB-PaCS MD
-
-## Version 1.0.10 
-2025.4.28
-- Fixed a bug where the `rerun` command could not run in pacs_q_md.
-- Improved the `help` command; help documentation is now clearer and more readable.
-
 **PaCS-Q** is a Python toolkit designed to assist with
 Parallel Cascade Selection simulations (PaCS) for studying
 protein structural transitions in MD and QM/MM MD level.
@@ -20,6 +11,15 @@ protein structural transitions in MD and QM/MM MD level.
                     ██╔═══╝░██╔══██║██║░░██╗░╚═══██╗░╚════╝░╚██████╔╝
                     ██║░░░░░██║░░██║╚█████╔╝██████╔╝░░░░░░░░░╚═██╔═╝░
                     ╚═╝░░░░░╚═╝░░╚═╝░╚════╝░╚═════╝░░░░░░░░░░░░╚═╝░░░
+
+### Version 1.0.10 
+2025.7.11
+- Fixed a bug where the `rerun` command could not run in pacs_q_md.
+- Improved the `help` command; help documentation is now clearer and more readable.
+
+### Version 1.0.9
+2025.4.28
+- Added support for running LB-PaCS MD
 
 ## Prerequisites
 **Before installing and running PaCS-Q, ensure you have the following:**
