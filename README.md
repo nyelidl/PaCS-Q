@@ -1,5 +1,14 @@
 # PaCS-Q (dev)
-Welcome to PaCS-Q v1.0.9 by L.Duan 2025.4.28
+Welcome to PaCS-Q by L.Duan
+
+## Version 1.0.9
+2025.4.28
+- Added support for running LB-PaCS MD
+
+## Version 1.0.10 
+2025.4.28
+- Fixed a bug where the `rerun` command could not run in pacs_q_md.
+- Improved the `help` command; help documentation is now clearer and more readable.
 
 **PaCS-Q** is a Python toolkit designed to assist with
 Parallel Cascade Selection simulations (PaCS) for studying
