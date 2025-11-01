@@ -1,5 +1,6 @@
 # PaCS-Q (dev)
 Welcome to PaCS-Q by L.Duan
+github：https://github.com/nyelidl/PaCS-Q
 
 **PaCS-Q** is a Python toolkit designed to assist with
 Parallel Cascade Selection simulations (PaCS) for studying
