@@ -13,7 +13,7 @@ protein structural transitions in MD and QM/MM MD level.
                     ██║░░░░░██║░░██║╚█████╔╝██████╔╝░░░░░░░░░╚═██╔═╝░
                     ╚═╝░░░░░╚═╝░░╚═╝░╚════╝░╚═════╝░░░░░░░░░░░░╚═╝░░░
 
-### Version 1.2.3
+### Version 1.2.4
 2025.11.1
 - Added the [OpenMM](https://openmm.org/) engine: users can now run simulations with OpenMM.
 - Added a dependency on ParmEd; pinned NumPy to a pre-2.3 version for compatibility (this pin will be removed once ParmEd is updated).
