@@ -12,6 +12,14 @@ protein structural transitions in MD and QM/MM MD level.
                     ██║░░░░░██║░░██║╚█████╔╝██████╔╝░░░░░░░░░╚═██╔═╝░
                     ╚═╝░░░░░╚═╝░░╚═╝░╚════╝░╚═════╝░░░░░░░░░░░░╚═╝░░░
 
+### Version 1.2.3
+2025.11.1
+- Added the [OpenMM](https://openmm.org/) engine: users can now run simulations with OpenMM.
+- Added a dependency on ParmEd; pinned NumPy to a pre-2.3 version for compatibility (this pin will be removed once ParmEd is updated).
+- Added command logging: the input command line is saved to run.dat so you can retrieve commands from previous runs.
+- Added colorized output to improve readability.
+- Optimized parts of the code.
+
 ### Version 1.0.10 
 2025.7.11
 - Fixed a bug where the `rerun` command could not run in pacs_q_md.
@@ -21,13 +29,6 @@ protein structural transitions in MD and QM/MM MD level.
 2025.4.28
 - Added support for running LB-PaCS MD
 
-### Version 1.2.3
-2025.11.1
-- Added the [OpenMM](https://openmm.org/) engine: users can now run simulations with OpenMM.
-- Added a dependency on ParmEd; pinned NumPy to a pre-2.3 version for compatibility (this pin will be removed once ParmEd is updated).
-- Added command logging: the input command line is saved to run.dat so you can retrieve commands from previous runs.
-- Added colorized output to improve readability.
-- Optimized parts of the code.
 
 ## Prerequisites
 **Before installing and running PaCS-Q, ensure you have the following:**
