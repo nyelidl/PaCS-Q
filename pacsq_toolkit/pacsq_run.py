@@ -19,7 +19,6 @@ def pacsq_run(cyc, rep, foldername="MDrun", location=os.getcwd(), crd="qmmm.crd"
         write_to_dat("qmmm.in", qm_int)
     input = f"parm {location}/{top}"
     os.system(f"mkdir ./{foldername}")
-    print("### Pacs-Q running... ###")
     with open(f"sum-all.sh", "w") as file:
         file.write(input)
     for i in tqdm(range(cyc)):

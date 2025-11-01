@@ -1,13 +1,10 @@
 from pacsq_toolkit.pacsrmsd import min_rmsd_single, min_dis_single
 from pacsq_toolkit.qmmm_setting import *
-#from pacsq_toolkit.sander_run_mpi import sander_run_mpi, sander_run_mpi_cyc
-from pacsq_toolkit.pmemd_run import pmemd_run, pmemd_run_cyc
 from pacsq_toolkit.openmm_engine import openmm_run, openmm_run_cyc
 import os
 from tqdm import tqdm
 
-
-def pacsq_pmemd_run_rmsd(cyc, rep, foldername="MDrun", location=os.getcwd(), crd="qmmm.crd", top="qmmm.top", ref_location="F.pdb",
+def pacsq_openmm_run_rmsd(cyc, rep, foldername="MDrun", location=os.getcwd(), crd="qmmm.crd", top="qmmm.top", ref_location="F.pdb",
               selection="./orca/F.pdb", qmmm_int=None):
     # Write some toolkit
     write_to_dat("cpp.sh", cpp)
@@ -32,7 +29,7 @@ def pacsq_pmemd_run_rmsd(cyc, rep, foldername="MDrun", location=os.getcwd(), crd
                 #print(f"rep {j}")
                 os.system(f"mkdir ./{foldername}/{i}/{j}")
                 os.chdir(f"{location}/{foldername}/{i}/{j}")
-                pmemd_run(crd, top, i, j)
+                openmm_run(crd, top, i, j)
                 os.chdir(location)
         else:
             c_top = f"{location}/{top}"
@@ -66,11 +63,12 @@ def pacsq_pmemd_run_rmsd(cyc, rep, foldername="MDrun", location=os.getcwd(), crd
                 #print(f"running rep {j}")
                 os.system(f"mkdir ./{foldername}/{i}/{j}")
                 os.chdir(f"{location}/{foldername}/{i}/{j}")
-                pmemd_run_cyc(crd, top, i, j, location, foldername, ref)
+                openmm_run_cyc(crd, top, i, j, location, foldername, ref)
                 os.chdir(location)
 
 
-def pacsq_pmemd_run_dis(cyc, rep, foldername="MDrun", location=os.getcwd(), crd="qmmm.crd", top="qmmm.top", selection1="resid 1",
+
+def pacsq_openmm_run_dis(cyc, rep, foldername="MDrun", location=os.getcwd(), crd="qmmm.crd", top="qmmm.top", selection1="resid 1",
               selection2="resid 2", qmmm_int=None, choose=1):
     # Write some toolkit
     write_to_dat("cpp.sh", cpp)
@@ -95,7 +93,7 @@ def pacsq_pmemd_run_dis(cyc, rep, foldername="MDrun", location=os.getcwd(), crd=
                 #print(f"rep {j}")
                 os.system(f"mkdir ./{foldername}/{i}/{j}")
                 os.chdir(f"{location}/{foldername}/{i}/{j}")
-                pmemd_run(crd, top, i, j)
+                openmm_run(crd, top, i, j)
                 os.chdir(location)
         else:
             c_top = f"{location}/{top}"
@@ -135,7 +133,5 @@ def pacsq_pmemd_run_dis(cyc, rep, foldername="MDrun", location=os.getcwd(), crd=
                 #print(f"running rep {j}")
                 os.system(f"mkdir ./{foldername}/{i}/{j}")
                 os.chdir(f"{location}/{foldername}/{i}/{j}")
-                pmemd_run_cyc(crd, top, i, j, location, foldername, ref)
+                openmm_run_cyc(crd, top, i, j, location, foldername, ref)
                 os.chdir(location)
-
-

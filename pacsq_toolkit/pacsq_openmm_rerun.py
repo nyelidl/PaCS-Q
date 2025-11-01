@@ -1,7 +1,7 @@
 from pacsq_toolkit.pacsrmsd import min_rmsd_single, min_dis_single
 from pacsq_toolkit.qmmm_setting import (md_tem_s, qmmm_tem_s, qmmm_tem, write_to_sh, write_to_dat, read_dat)
 from pacsq_toolkit.sander_run_mpi import sander_run_mpi, sander_run_mpi_cyc
-from pacsq_toolkit.pmemd_run import pmemd_run, pmemd_run_cyc
+from pacsq_toolkit.openmm_engine import openmm_run, openmm_run_cyc
 import os
 from tqdm import tqdm
 
@@ -21,7 +21,7 @@ def get_latest_folder_name(directory):
         return None
 
 
-def pacsq_pmemd_rerun_dis(cyc_plus, rep, foldername="MDrun", location=os.getcwd(), crd="qmmm.crd",
+def pacsq_openmm_rerun_dis(cyc_plus, rep, foldername="MDrun", location=os.getcwd(), crd="qmmm.crd",
                 top="qmmm.top", selection1="resid 1", selection2="resid 2", qmmm_int=None, choose=1):
     if qmmm_int is None:
         write_to_dat("md.in", md_tem_s)
@@ -38,7 +38,7 @@ def pacsq_pmemd_rerun_dis(cyc_plus, rep, foldername="MDrun", location=os.getcwd(
                 # print(f"rep {j}")
                 os.system(f"mkdir ./{foldername}/{i}/{j}")
                 os.chdir(f"{location}/{foldername}/{i}/{j}")
-                pmemd_run(crd, top, i, j)
+                openmm_run(crd, top, i, j)
                 os.chdir(location)
         else:
             c_top = f"{location}/{top}"
@@ -79,7 +79,7 @@ def pacsq_pmemd_rerun_dis(cyc_plus, rep, foldername="MDrun", location=os.getcwd(
                 # print(f"running rep {j}")
                 os.system(f"mkdir ./{foldername}/{i}/{j}")
                 os.chdir(f"{location}/{foldername}/{i}/{j}")
-                pmemd_run_cyc(crd, top, i, j, location, foldername, ref)
+                openmm_run_cyc(crd, top, i, j, location, foldername, ref)
                 os.chdir(location)
 
     with open("sum-all.sh", "r", encoding="utf-8") as f:
@@ -129,7 +129,7 @@ def pacsq_pmemd_rerun_dis(cyc_plus, rep, foldername="MDrun", location=os.getcwd(
 
 
 
-def pacsq_pmemd_rerun_rmsd(cyc_plus, rep, foldername="MDrun", location=os.getcwd(), crd="qmmm.crd",
+def pacsq_openmm_rerun_rmsd(cyc_plus, rep, foldername="MDrun", location=os.getcwd(), crd="qmmm.crd",
                 top="qmmm.top", ref_location="F.pdb", selection="resid 2", qmmm_int=None):
     if qmmm_int is None:
         write_to_dat("md.in", md_tem_s)
@@ -146,7 +146,7 @@ def pacsq_pmemd_rerun_rmsd(cyc_plus, rep, foldername="MDrun", location=os.getcwd
                 # print(f"rep {j}")
                 os.system(f"mkdir ./{foldername}/{i}/{j}")
                 os.chdir(f"{location}/{foldername}/{i}/{j}")
-                pmemd_run(crd, top, i, j)
+                openmm_run(crd, top, i, j)
                 os.chdir(location)
         else:
             c_top = f"{location}/{top}"
@@ -181,7 +181,7 @@ def pacsq_pmemd_rerun_rmsd(cyc_plus, rep, foldername="MDrun", location=os.getcwd
                 # print(f"running rep {j}")
                 os.system(f"mkdir ./{foldername}/{i}/{j}")
                 os.chdir(f"{location}/{foldername}/{i}/{j}")
-                pmemd_run_cyc(crd, top, i, j, location, foldername, ref)
+                openmm_run_cyc(crd, top, i, j, location, foldername, ref)
                 os.chdir(location)
 
     with open("sum-all.sh", "r", encoding="utf-8") as f:

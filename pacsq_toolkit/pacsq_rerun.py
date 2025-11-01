@@ -27,7 +27,6 @@ def pacsq_rerun(cyc_plus, rep, foldername="MDrun", location=os.getcwd(), crd="qm
         qm_int = read_dat(qmmm_int)
         write_to_dat("qmmm.in", qm_int)
     input = f"parm {location}/{top}"
-    print("### Pacs-Q rerunning... ###")
     died_cyc = int(get_latest_folder_name(f"./{foldername}"))
     for i in tqdm(range(died_cyc, cyc_plus + 2)):
         os.chdir(location)

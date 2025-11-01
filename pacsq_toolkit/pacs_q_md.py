@@ -1,24 +1,79 @@
 #!/usr/bin/python
 import argparse
-import os
+import argparse, json, sys, os, shutil
+from pathlib import Path
+from datetime import datetime
 import warnings
 
+RESET = "\033[0m"
+COLORS = {
+    "cyan":"\033[96m", "blue":"\033[94m", "green":"\033[92m",
+    "yellow":"\033[93m", "red":"\033[91m", "magenta":"\033[95m",
+    "gray":"\033[90m", "white":"\033[97m"
+}
+
+def _use_color():
+    return sys.stdout.isatty() and os.getenv("NO_COLOR") is None
+
+def colorize(text, color):
+    if not _use_color() or color not in COLORS: return text
+    return COLORS[color] + text + RESET
+
+def rule(title="", char="─", color="cyan"):
+    width = shutil.get_terminal_size((80, 20)).columns
+    if title:
+        middle = f" {title} "
+        side = max(2, (width - len(middle)) // 2)
+        line = char * side + middle + char * (width - side - len(middle))
+    else:
+        line = char * width
+    print(colorize(line, color))
+
+def banner(text, color="green", marker="="):
+    width = shutil.get_terminal_size((80, 20)).columns
+    line = marker * width
+    print(colorize(line, color))
+    print(colorize(text.center(width), color))
+    print(colorize(line, color))
+
+def boxed(text, color="blue"):
+    width = shutil.get_terminal_size((80, 20)).columns
+    inner = min(width - 4, max(20, len(text) + 2))
+    top = "┌" + "─" * inner + "┐"
+    mid = "│ " + text.center(inner - 2) + " │"
+    bot = "└" + "─" * inner + "┘"
+    for line in (top, mid, bot):
+        print(colorize(line, color))
+
+def step(msg, icon=">>", color="magenta"):
+    print(colorize(f"{icon} {msg}", color))
+
+def ok(msg="Done", color="green"):
+    print(colorize(f"✓ {msg}", color))
+
+def warn(msg, color="yellow"):
+    print(colorize(f"! {msg}", color))
+
+def err(msg, color="red"):
+    print(colorize(f"✗ {msg}", color))
 
 
 def main():
     from pacsq_toolkit.pacsq_run import pacsq_run
     from pacsq_toolkit.pacsq_exq_run import pacsq_exq_run
-    from pacsq_toolkit.pacsq_pmemd_rerun import pacsq_pmemd_rerun, pacsq_pmemd_rerun_rmsd 
+    from pacsq_toolkit.pacsq_pmemd_rerun import pacsq_pmemd_rerun_dis, pacsq_pmemd_rerun_rmsd
     from pacsq_toolkit.pacsq_pmemd_run import pacsq_pmemd_run_rmsd, pacsq_pmemd_run_dis
     from pacsq_toolkit.pacsq_rerun import get_latest_folder_name, pacsq_rerun
     from pacsq_toolkit.file_find import find_top_files, find_nc_files, find_crd_files
+    from pacsq_toolkit.pacsq_openmm_run import pacsq_openmm_run_rmsd, pacsq_openmm_run_dis
+    from pacsq_toolkit.pacsq_openmm_rerun import pacsq_openmm_rerun_rmsd, pacsq_openmm_rerun_dis
 
     crd_file = find_crd_files()
     default_crd = crd_file[0] if crd_file else None
     top_file = find_top_files()
     default_top = top_file[0] if top_file else None
 
-    parser = argparse.ArgumentParser(description="""Welcome to PaCS-Q v1.0.10 by L.Duan 2025.7.11
+    parser = argparse.ArgumentParser(description="""Welcome to PaCS-Q v1.2.3 by L.Duan 2025.11.1
     
     
     
@@ -41,6 +96,7 @@ Distance based PaCS-Q:
     Mandatory files: MD input file (md.in), topology (.top) and coordinate (.rst or .crd) files 
          pacs_q_md -cy 100 -cd 5 -s "resid 73" -s2 "resid 150" -md md.in -m b
          pacs_q_md --rerun -cy 100 -cd 5 -s "resid 73" -s2 "resid 150" -md md.in -m b
+         pacs_q_md -cy 100 -cd 5 -s "resid 73" -s2 "resid 150" -e openmm
          
 !!! Warning !!!
     Don't name your files starting with 'dis' or 'sum-all', they will be deleted by clean code!
@@ -85,44 +141,123 @@ Please cite paper:
     parser.add_argument('-l','--loc', type=str, default=os.getcwd(), help=f"""Path to PaCS-Q work directory
     default: {os.getcwd()}""")
 
+    parser.add_argument('-e', '--eng', type=str, default="AMBER", help=f"""Simulation engine, AMBER or OpenMM""")
+
     args = parser.parse_args()
 
     # print
     parser.print_help()
 
-    if args.rerun:
-        print("rerun code")
-        if args.sel2 is None:
-            print("rerun pmemd by RMSD")
-            pacsq_pmemd_rerun_rmsd(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.ref, args.sel,
-                                    args.mds)
-        elif args.ref is None:
-            if args.set == "b":
-                print("rerun pmemd by Distance (binding)")
-                pacsq_pmemd_rerun(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.sel, args.sel2,
-                                    args.mds, 1)
+    # What the user typed (full command line)
+    command_line = " ".join([os.path.basename(sys.argv[0])] + sys.argv[1:])
 
-            if args.set == "u":
-                print("rerun pmemd by Distance (unbinding)")
-                pacsq_pmemd_rerun(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.sel, args.sel2,
-                                  args.mds, 0)
+    # Build a record to print & save
+    record = {
+        "timestamp": datetime.now().isoformat(timespec="seconds"),
+        "cwd": str(Path.cwd()),
+        "command": command_line,
+        "args": vars(args),
+    }
+
+    # Echo to stdout
+    print("Received input:")
+    print(json.dumps(record, indent=2, ensure_ascii=False))
+
+    # Append to run.dat (one JSON per line) or overwrite—pick one style:
+
+    # (A) Append mode: keeps a history (recommended)
+    with open("run.dat", "a", encoding="utf-8") as f:
+        f.write(json.dumps(record, ensure_ascii=False) + "\n")
+
+
+
+    # run block
+    md_engine = args.eng.casefold()
+    if md_engine == "openmm":
+        # run by openmm
+        boxed("MD Simulation by OpenMM")
+        if args.rerun:
+            step("rerun code")
+            if args.sel2 is None:
+                step("rerun OpenMM by RMSD")
+                banner("PaCS-Q running...", color="cyan", marker="=")
+                pacsq_openmm_rerun_rmsd(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.ref, args.sel,
+                                        args.mds)
+            elif args.ref is None:
+                if args.set == "b":
+                    step("rerun OpenMM by Distance (binding)")
+                    banner("PaCS-Q running...", color="cyan", marker="=")
+                    pacsq_openmm_rerun_dis(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.sel, args.sel2,
+                                        args.mds, 1)
+
+                if args.set == "u":
+                    step("rerun OpenMM by Distance (unbinding)")
+                    banner("PaCS-Q running...", color="cyan", marker="=")
+                    pacsq_openmm_rerun_dis(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.sel, args.sel2,
+                                      args.mds, 0)
+
+        else:
+            step("run code")
+            if args.sel2 is None:
+                step("rerun OpenMM by RMSD")
+                banner("PaCS-Q running...", color="cyan", marker="=")
+                pacsq_openmm_run_rmsd(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.ref, args.sel, args.mds)
+
+            elif args.ref is None:
+                if args.set == "b":
+                    step("run OpenMM by Distance (binding)")
+                    banner("PaCS-Q running...", color="cyan", marker="=")
+                    pacsq_openmm_run_dis(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.sel, args.sel2,
+                                        args.mds, 1)
+                if args.set == "u":
+                    step("run OpenMM by Distance (unbinding)")
+                    banner("PaCS-Q running...", color="cyan", marker="=")
+                    pacsq_openmm_run_dis(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.sel, args.sel2,
+                                            args.mds, 0)
 
     else:
-        print("run code")
-        if args.sel2 is None:
-            print("run pmemd by RMSD")
-            pacsq_pmemd_run_rmsd(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.ref, args.sel, args.mds)
+        # run by amber
+        boxed("MD Simulation by AMBER")
+        if args.rerun:
+            step("rerun code")
+            if args.sel2 is None:
+                step("rerun pmemd by RMSD")
+                banner("PaCS-Q running...", color="cyan", marker="=")
+                pacsq_pmemd_rerun_rmsd(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.ref, args.sel,
+                                        args.mds)
+            elif args.ref is None:
+                if args.set == "b":
+                    step("rerun pmemd by Distance (binding)")
+                    banner("PaCS-Q running...", color="cyan", marker="=")
+                    pacsq_pmemd_rerun_dis(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.sel, args.sel2,
+                                        args.mds, 1)
 
-        elif args.ref is None:
-            if args.set == "b":
-                print("run pmemd by Distance (binding)")
-                pacsq_pmemd_run_dis(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.sel, args.sel2,
-                                    args.mds, 1)
-            if args.set == "u":
-                print("run pmemd by Distance (unbinding)")
-                pacsq_pmemd_run_dis(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.sel, args.sel2,
-                                        args.mds, 0)
+                if args.set == "u":
+                    step("rerun pmemd by Distance (unbinding)")
+                    banner("PaCS-Q running...", color="cyan", marker="=")
+                    pacsq_pmemd_rerun_dis(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.sel, args.sel2,
+                                      args.mds, 0)
 
+        else:
+            step("run code")
+            if args.sel2 is None:
+                step("run pmemd by RMSD")
+                banner("PaCS-Q running...", color="cyan", marker="=")
+                pacsq_pmemd_run_rmsd(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.ref, args.sel, args.mds)
+
+            elif args.ref is None:
+                if args.set == "b":
+                    step("run pmemd by Distance (binding)")
+                    banner("PaCS-Q running...", color="cyan", marker="=")
+                    pacsq_pmemd_run_dis(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.sel, args.sel2,
+                                        args.mds, 1)
+                if args.set == "u":
+                    step("run pmemd by Distance (unbinding)")
+                    banner("PaCS-Q running...", color="cyan", marker="=")
+                    pacsq_pmemd_run_dis(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.sel, args.sel2,
+                                            args.mds, 0)
+
+    ok("Done!")
 
     #if args.rerun:
     #    pacsq_rerun(args.cyc, args.rep, args.fol, args.loc, args.crd, args.top, args.ref, args.sel, args.qms)

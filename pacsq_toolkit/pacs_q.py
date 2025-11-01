@@ -1,7 +1,61 @@
 #!/usr/bin/python
-import argparse
-import os
+import argparse, json, sys, os, shutil
+from pathlib import Path
+from datetime import datetime
 import warnings
+
+
+RESET = "\033[0m"
+COLORS = {
+    "cyan":"\033[96m", "blue":"\033[94m", "green":"\033[92m",
+    "yellow":"\033[93m", "red":"\033[91m", "magenta":"\033[95m",
+    "gray":"\033[90m", "white":"\033[97m"
+}
+
+def _use_color():
+    return sys.stdout.isatty() and os.getenv("NO_COLOR") is None
+
+def colorize(text, color):
+    if not _use_color() or color not in COLORS: return text
+    return COLORS[color] + text + RESET
+
+def rule(title="", char="─", color="cyan"):
+    width = shutil.get_terminal_size((80, 20)).columns
+    if title:
+        middle = f" {title} "
+        side = max(2, (width - len(middle)) // 2)
+        line = char * side + middle + char * (width - side - len(middle))
+    else:
+        line = char * width
+    print(colorize(line, color))
+
+def banner(text, color="green", marker="="):
+    width = shutil.get_terminal_size((80, 20)).columns
+    line = marker * width
+    print(colorize(line, color))
+    print(colorize(text.center(width), color))
+    print(colorize(line, color))
+
+def boxed(text, color="blue"):
+    width = shutil.get_terminal_size((80, 20)).columns
+    inner = min(width - 4, max(20, len(text) + 2))
+    top = "┌" + "─" * inner + "┐"
+    mid = "│ " + text.center(inner - 2) + " │"
+    bot = "└" + "─" * inner + "┘"
+    for line in (top, mid, bot):
+        print(colorize(line, color))
+
+def step(msg, icon=">>", color="magenta"):
+    print(colorize(f"{icon} {msg}", color))
+
+def ok(msg="Done", color="green"):
+    print(colorize(f"✓ {msg}", color))
+
+def warn(msg, color="yellow"):
+    print(colorize(f"! {msg}", color))
+
+def err(msg, color="red"):
+    print(colorize(f"✗ {msg}", color))
 
 
 
@@ -17,7 +71,7 @@ def main():
     default_top = top_file[0] if top_file else None
 
 
-    parser = argparse.ArgumentParser(description="""Welcome to PaCS-Q v1.0.10 by L.Duan 2025.7.11
+    parser = argparse.ArgumentParser(description="""Welcome to PaCS-Q v1.2.3 by L.Duan 2025.11.1
     
     
     
@@ -79,12 +133,42 @@ Please cite paper:
     # print
     parser.print_help()
 
+    # What the user typed (full command line)
+    command_line = " ".join([os.path.basename(sys.argv[0])] + sys.argv[1:])
+
+    # Build a record to print & save
+    record = {
+        "timestamp": datetime.now().isoformat(timespec="seconds"),
+        "cwd": str(Path.cwd()),
+        "command": command_line,
+        "args": vars(args),
+    }
+
+    # Echo to stdout
+    print("Received input:")
+    print(json.dumps(record, indent=2, ensure_ascii=False))
+
+    # Append to run.dat (one JSON per line) or overwrite—pick one style:
+
+    # (A) Append mode: keeps a history (recommended)
+    with open("run.dat", "a", encoding="utf-8") as f:
+        f.write(json.dumps(record, ensure_ascii=False) + "\n")
+
+    boxed("MD Simulation by AMBER")
     if args.rerun:
+        step("run sander by RMSD")
+        banner("PaCS-Q running...", color="cyan", marker="=")
         pacsq_rerun(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.ref, args.sel, args.qms)
     elif args.exqm:
+        step("run sander/extend QM software by RMSD")
+        banner("PaCS-Q running...", color="cyan", marker="=")
         pacsq_exq_run(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.ref, args.sel, args.qms, args.exq)
     else:
+        step("rerun sander by RMSD")
+        banner("PaCS-Q running...", color="cyan", marker="=")
         pacsq_run(args.cyc, args.candi, args.dir, args.loc, args.crd, args.top, args.ref, args.sel, args.qms)
+    ok("Done!")
+
 
 if __name__ == "__main__":
     main()
