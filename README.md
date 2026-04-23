@@ -1,4 +1,5 @@
 # PaCS-Q (dev)
+[![PyPI Downloads](https://static.pepy.tech/personalized-badge/pacs-q?period=total&units=ABBREVIATION&left_color=BLACK&right_color=BRIGHTGREEN&left_text=downloads)](https://pepy.tech/projects/pacs-q) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
 Welcome to PaCS-Q by L.Duan  
 github：https://github.com/nyelidl/PaCS-Q
 
