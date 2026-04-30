@@ -14,19 +14,30 @@ except ImportError:
 
 
 parser = argparse.ArgumentParser(
-    description="LB-PaCS-MD selection analysis: ligand SASA + contact number + VFD2 opening angle"
+    description=(
+        "LB-PaCS-MD selection analysis: "
+        "ligand SASA + contact number + VFD2 opening angle + ligand-pocket distance"
+    )
 )
 
 parser.add_argument("-n", "--nc", type=str, required=True, help="trajectory directory")
 parser.add_argument("-t", "--top", type=str, required=True, help="topology directory")
+
 parser.add_argument("-l", "--ligand", type=str, required=True, help="ligand selection")
 parser.add_argument("-p", "--protein", type=str, default="protein", help="protein selection")
+parser.add_argument("--pocket", type=str, required=True, help="binding pocket selection")
 
 parser.add_argument("--lobe1", type=str, required=True, help="VFD2 lobe 1 selection")
 parser.add_argument("--hinge", type=str, required=True, help="VFD2 hinge selection")
 parser.add_argument("--lobe2", type=str, required=True, help="VFD2 lobe 2 selection")
 
 parser.add_argument("--cutoff", type=float, default=4.0, help="contact cutoff in Angstrom")
+
+parser.add_argument("--w-sasa", type=float, default=0.30, help="weight for ligand SASA")
+parser.add_argument("--w-contact", type=float, default=0.30, help="weight for ligand-protein contact number")
+parser.add_argument("--w-angle", type=float, default=0.20, help="weight for VFD2 opening angle")
+parser.add_argument("--w-distance", type=float, default=0.20, help="weight for ligand-pocket distance")
+
 parser.add_argument("-s", "--save", type=str, default="lbpacs_score.dat", help="output file")
 
 args = parser.parse_args()
@@ -61,17 +72,19 @@ def extract_sort_keys(filename):
 
 def normalize(values):
     values = np.array(values, dtype=float)
-    vmin = np.min(values)
-    vmax = np.max(values)
+    vmin = np.nanmin(values)
+    vmax = np.nanmax(values)
+
     if np.isclose(vmax, vmin):
         return np.zeros_like(values)
+
     return (values - vmin) / (vmax - vmin)
 
 
 def calc_angle(p1, p2, p3):
     """
-    angle p1-p2-p3 in degrees
-    p2 is hinge point
+    Calculate angle p1-p2-p3 in degrees.
+    p2 is the hinge point.
     """
     v1 = p1 - p2
     v2 = p3 - p2
@@ -90,13 +103,13 @@ def calc_angle(p1, p2, p3):
 
 def calc_ligand_sasa(u, ligand_sel):
     """
-    Calculate ligand SASA for current frame.
+    Calculate ligand SASA for the current frame.
     Requires MDAnalysis ShrakeRupley.
     """
     if ShrakeRupley is None:
         raise ImportError(
             "MDAnalysis.analysis.sasa.ShrakeRupley is not available. "
-            "Please update MDAnalysis or use FreeSASA-based calculation."
+            "Please update MDAnalysis or use a FreeSASA/cpptraj-based calculation."
         )
 
     ligand = u.select_atoms(ligand_sel)
@@ -124,6 +137,15 @@ def calc_contact_number(ligand, protein, cutoff=4.0):
     return len(contacted_resids)
 
 
+def calc_com_distance(group1, group2):
+    """
+    COM distance between two atom groups.
+    """
+    com1 = group1.center_of_mass()
+    com2 = group2.center_of_mass()
+    return np.linalg.norm(com1 - com2)
+
+
 def analyze_all(nc_location, top_location):
     nc_files = find_files(nc_location, ".nc")
     nc_files = sorted(nc_files, key=extract_sort_keys)
@@ -144,6 +166,7 @@ def analyze_all(nc_location, top_location):
     all_sasa = []
     all_contacts = []
     all_angles = []
+    all_distances = []
     all_traj = []
     all_frame = []
 
@@ -152,6 +175,8 @@ def analyze_all(nc_location, top_location):
 
         ligand = u.select_atoms(args.ligand)
         protein = u.select_atoms(args.protein)
+        pocket = u.select_atoms(args.pocket)
+
         lobe1 = u.select_atoms(args.lobe1)
         hinge = u.select_atoms(args.hinge)
         lobe2 = u.select_atoms(args.lobe2)
@@ -160,6 +185,8 @@ def analyze_all(nc_location, top_location):
             raise ValueError(f"Ligand selection returned 0 atoms: {args.ligand}")
         if len(protein) == 0:
             raise ValueError(f"Protein selection returned 0 atoms: {args.protein}")
+        if len(pocket) == 0:
+            raise ValueError(f"Pocket selection returned 0 atoms: {args.pocket}")
         if len(lobe1) == 0:
             raise ValueError(f"Lobe1 selection returned 0 atoms: {args.lobe1}")
         if len(hinge) == 0:
@@ -182,19 +209,41 @@ def analyze_all(nc_location, top_location):
 
             angle = calc_angle(p1, p2, p3)
 
+            lig_pocket_distance = calc_com_distance(ligand, pocket)
+
             all_sasa.append(sasa)
             all_contacts.append(contacts)
             all_angles.append(angle)
+            all_distances.append(lig_pocket_distance)
+
             all_traj.append(nc)
             all_frame.append(ts.frame)
 
     sasa_norm = normalize(all_sasa)
     contact_norm = normalize(all_contacts)
     angle_norm = normalize(all_angles)
+    distance_norm = normalize(all_distances)
 
-    score = sasa_norm - contact_norm + angle_norm
+    score = (
+        args.w_sasa * sasa_norm
+        - args.w_contact * contact_norm
+        + args.w_angle * angle_norm
+        + args.w_distance * distance_norm
+    )
 
-    return all_traj, all_frame, all_sasa, all_contacts, all_angles, sasa_norm, contact_norm, angle_norm, score
+    return (
+        all_traj,
+        all_frame,
+        all_sasa,
+        all_contacts,
+        all_angles,
+        all_distances,
+        sasa_norm,
+        contact_norm,
+        angle_norm,
+        distance_norm,
+        score,
+    )
 
 
 results = analyze_all(args.nc, args.top)
@@ -205,9 +254,11 @@ results = analyze_all(args.nc, args.top)
     sasa,
     contacts,
     angles,
+    distances_lig_pocket,
     sasa_norm,
     contact_norm,
     angle_norm,
+    distance_norm,
     scores,
 ) = results
 
@@ -215,15 +266,25 @@ results = analyze_all(args.nc, args.top)
 with open(args.save, "w") as f:
     f.write(
         "traj\tframe\tligand_SASA\tcontact_number\tVFD2_opening_angle\t"
-        "SASA_norm\tContact_norm\tAngle_norm\tScore\n"
+        "ligand_pocket_COM_distance\t"
+        "SASA_norm\tContact_norm\tAngle_norm\tDistance_norm\tScore\n"
     )
 
     for i in range(len(scores)):
         f.write(
             f"{trajs[i]}\t{frames[i]}\t"
             f"{sasa[i]:.6f}\t{contacts[i]}\t{angles[i]:.6f}\t"
+            f"{distances_lig_pocket[i]:.6f}\t"
             f"{sasa_norm[i]:.6f}\t{contact_norm[i]:.6f}\t"
-            f"{angle_norm[i]:.6f}\t{scores[i]:.6f}\n"
+            f"{angle_norm[i]:.6f}\t{distance_norm[i]:.6f}\t"
+            f"{scores[i]:.6f}\n"
         )
 
 print(f"Done. Output saved to {args.save}")
+print(
+    "Score = "
+    f"{args.w_sasa:.2f}*SASA_norm "
+    f"- {args.w_contact:.2f}*Contact_norm "
+    f"+ {args.w_angle:.2f}*Angle_norm "
+    f"+ {args.w_distance:.2f}*Distance_norm"
+)
