@@ -31,6 +31,13 @@ protein structural transitions in MD and QM/MM MD level.
 2025.4.28
 - Added support for running LB-PaCS MD
 
+### Try LB-PaCS-MD on Google Colab: click > [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1FfTuVSykgsstjzN0nJN0ZQo1_tw0WXSe?usp=sharing) 
+[![DOI](https://img.shields.io/badge/DOI-10.1021%2Facs.jcim.5c02852-blue)](https://doi.org/10.1021/acs.jcim.5c02852)
+[![License](https://img.shields.io/badge/License-Academic-green.svg)]()
+
+This notebook provides a **cloud-friendly workflow** for **fully dynamic host–guest docking** using OpenMM and the **LB-PaCS-MD** (Ligand Binding Path Sampling based on Parallel Cascade Selection MD) strategy.  
+It enables students and researchers to explore **spontaneous binding and unbinding processes in explicit solvent** using enhanced molecular dynamics on **Google Colab**, with minimal setup.
+
 
 ## Prerequisites
 **Before installing and running PaCS-Q, ensure you have the following:**
