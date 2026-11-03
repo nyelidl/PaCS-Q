@@ -341,8 +341,5 @@ Please cite paper:
 
 
 <p align="center">
-  <img
-    src="https://img.youtube.com/vi/ihASjAabNBY/maxresdefault.jpg"
-    alt="PaCS-Q Demo"
-    width="600">
+  <img src="./PQ-L.png" alt="PaCS-Q logo" width="120">
 </p>
