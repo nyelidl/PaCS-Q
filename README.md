@@ -341,6 +341,6 @@ Please cite paper:
 
 <div align="center">
 
-<img src="./PQ-L.png" alt="PaCS-Q logo" width="120">
+<img src="./PQ-L.png" alt="PaCS-Q logo" width="220">
 
 </div>
