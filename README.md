@@ -339,7 +339,8 @@ Please cite paper:
    Journal of Chemical Information and Modeling 2025 65 (13), 6441–6445  
    DOI: 10.1021/acs.jcim.5c00936
 
+<div align="center">
 
-<p align="center">
-  <img src="./PQ-L.png" alt="PaCS-Q logo" width="120">
-</p>
+<img src="./PQ-L.png" alt="PaCS-Q logo" width="120">
+
+</div>
