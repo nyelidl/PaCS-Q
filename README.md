@@ -340,4 +340,9 @@ Please cite paper:
    DOI: 10.1021/acs.jcim.5c00936
 
 
-<img src="./PQ-L.png" alt="PaCS-Q logo" width="220">
+<p align="center">
+  <img
+    src="https://img.youtube.com/vi/ihASjAabNBY/maxresdefault.jpg"
+    alt="PaCS-Q Demo"
+    width="600">
+</p>
