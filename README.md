@@ -1,4 +1,4 @@
-# PaCS-Q (dev)
+# PaCS-Q
 [![PyPI Downloads](https://static.pepy.tech/personalized-badge/pacs-q?period=total&units=ABBREVIATION&left_color=BLACK&right_color=BRIGHTGREEN&left_text=downloads)](https://pepy.tech/projects/pacs-q) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)  
 Welcome to PaCS-Q by L.Duan  
 github：https://github.com/nyelidl/PaCS-Q
@@ -31,12 +31,14 @@ protein structural transitions in MD and QM/MM MD level.
 2025.4.28
 - Added support for running LB-PaCS MD
 
-### Try LB-PaCS-MD on Google Colab: click > [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1FfTuVSykgsstjzN0nJN0ZQo1_tw0WXSe?usp=sharing) 
+### Try LB-PaCS-MD (DFDD) on Google Colab: click > [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1FfTuVSykgsstjzN0nJN0ZQo1_tw0WXSe?usp=sharing) 
 [![DOI](https://img.shields.io/badge/DOI-10.1021%2Facs.jcim.5c02852-blue)](https://doi.org/10.1021/acs.jcim.5c02852)
 [![License](https://img.shields.io/badge/License-Academic-green.svg)]()
 
 This notebook provides a **cloud-friendly workflow** for **fully dynamic host–guest docking** using OpenMM and the **LB-PaCS-MD** (Ligand Binding Path Sampling based on Parallel Cascade Selection MD) strategy.  
 It enables students and researchers to explore **spontaneous binding and unbinding processes in explicit solvent** using enhanced molecular dynamics on **Google Colab**, with minimal setup.
+
+[![Watch the PaCS-Q demo](https://img.youtube.com/vi/ihASjAabNBY/maxresdefault.jpg)](https://youtu.be/ihASjAabNBY)
 
 
 ## Prerequisites
@@ -335,6 +337,7 @@ Please cite paper:
    DOI: 10.1021/acs.jctc.5c00169  
 3. Lian Duan, Kowit Hengphasatporn, and Yasuteru Shigeta  
    Journal of Chemical Information and Modeling 2025 65 (13), 6441–6445  
-   DOI: 10.1021/acs.jcim.5c00936  
+   DOI: 10.1021/acs.jcim.5c00936
 
-  
+
+<img src="./PQ-L.png" alt="PaCS-Q logo" width="220">
